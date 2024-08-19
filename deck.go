@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"strings"
 )
 
@@ -23,6 +25,7 @@ func newDeck() deck {
 }
 
 func (d deck) print() {
+
 	for i, card := range d {
 		fmt.Println(i, card)
 	}
@@ -35,4 +38,30 @@ func deal(d deck, handSize int) (deck, deck) {
 func (d deck) toString() string {
 	deckString := (strings.Join(d, ","))
 	return deckString
+}
+
+func (d deck) saveToFile(filename string) error {
+
+	// `b` contains everything your file has.
+	// This writes it to the Standard Out.
+	// os.Stdout.Write(b)
+
+	// You can also write it to a file as a whole.
+	err := os.WriteFile(filename, []byte(d.toString()), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return err
+}
+
+func NewDeckFromFile(filename string) (deck, error) {
+	deckInBytes, err := os.ReadFile(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	deckInString := string(deckInBytes)
+
+	deck := strings.Split(deckInString, ",")
+	return deck, err
 }
