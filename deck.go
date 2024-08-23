@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -13,8 +15,8 @@ type deck []string
 
 func newDeck() deck {
 	cards := deck{}
-	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
-	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"}
+	cardSuits := []string{"Spades", "Hearts"}
+	cardValues := []string{"Ace", "Two", "Three"}
 
 	for _, suit := range cardSuits {
 		for _, value := range cardValues {
@@ -25,7 +27,6 @@ func newDeck() deck {
 }
 
 func (d deck) print() {
-
 	for i, card := range d {
 		fmt.Println(i, card)
 	}
@@ -56,12 +57,31 @@ func (d deck) saveToFile(filename string) error {
 
 func NewDeckFromFile(filename string) (deck, error) {
 	deckInBytes, err := os.ReadFile(filename)
+
 	if err != nil {
-		log.Fatal(err)
+
+		log.Fatal("Error: ", err)
+		os.Exit(1)
 	}
 
 	deckInString := string(deckInBytes)
 
-	deck := strings.Split(deckInString, ",")
-	return deck, err
+	loadedDeck := strings.Split(deckInString, ",")
+	return loadedDeck, err
+}
+
+func (d deck) shuffleDeck() deck {
+	for loopIndex, card := range d {
+		randIndex := rand.Intn(len(d) - 1)
+		fmt.Println("randomIndex:", randIndex)
+		cardA := card
+		fmt.Println("cardA:", cardA)
+		cardB := d[randIndex]
+		fmt.Println("cardB:", cardB)
+		d = slices.Replace(d, randIndex, randIndex, cardA)
+		d.print()
+		d = slices.Replace(d, loopIndex, loopIndex, cardB)
+		d.print()
+	}
+	return d
 }
