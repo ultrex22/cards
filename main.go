@@ -14,11 +14,9 @@ func main() {
 
 	fmt.Println("\nCards in deck:")
 	remainingDeck.print()
-	fmt.Println("--------------------------------")
 
 	cards.saveToFile("testSaveFileDeck.txt")
 	fmt.Print("Cards saved to file successfully!\n\n")
-
 	newDeck, err := NewDeckFromFile("testSaveFileDeck.txt")
 
 	if err != nil {
@@ -27,8 +25,7 @@ func main() {
 	fmt.Println("Cards opened from file:")
 
 	fmt.Println(newDeck)
-	fmt.Println("--------------------------------")
-	cards = cards.shuffleDeck()
 	cards.print()
+	cards.shuffleDeck()
 
 }
