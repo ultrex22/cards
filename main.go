@@ -15,7 +15,10 @@ func main() {
 	fmt.Println("\nCards in deck:")
 	remainingDeck.print()
 
-	cards.saveToFile("testSaveFileDeck.txt")
+	err := cards.saveToFile("testSaveFileDeck.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Print("Cards saved to file successfully!\n\n")
 	newDeck, err := NewDeckFromFile("testSaveFileDeck.txt")
 

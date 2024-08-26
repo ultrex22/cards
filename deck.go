@@ -5,7 +5,6 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	// "slices"
 	"strings"
 	"time"
 )
@@ -40,7 +39,7 @@ func deal(d deck, handSize int) (deck, deck) {
 }
 
 func (d deck) toString() string {
-	deckString := (strings.Join(d, ","))
+	deckString := strings.Join(d, ",")
 	return deckString
 }
 
@@ -62,9 +61,7 @@ func NewDeckFromFile(filename string) (deck, error) {
 	deckInBytes, err := os.ReadFile(filename)
 
 	if err != nil {
-
 		log.Fatal("Error: ", err)
-		os.Exit(1)
 	}
 
 	deckInString := string(deckInBytes)
@@ -78,32 +75,32 @@ func (d deck) shuffleDeck() {
 	source := rand.NewSource(time.Now().UnixNano())
 	newRand := rand.New(source)
 
-	numOfLoops:=newRand.Intn(10)
-	
-	// for loop to shuffle the deck randon number of times
-	for i:=0; i<numOfLoops; i++ { 
-	// for loop to shuffle the deck 
-		for loopIndex, card := range d { 
+	numOfLoops := newRand.Intn(10)
+
+	// for loop to shuffle the deck random number of times
+	for i := 0; i < numOfLoops; i++ {
+		// for loop to shuffle the deck
+		for loopIndex, card := range d {
 			// if loopIndex == 4 {
 			// 	return d
 			// }
-	
+
 			randIndex := newRand.Intn(len(d) - 1)
 			// fmt.Println("randomIndex:", randIndex)
-	
+
 			loopCard := card
 			// fmt.Println("cardA:", loopCard)
-	
+
 			indexCard := d[randIndex]
 			// fmt.Println("cardB:", indexCard)
-	
+
 			d[loopIndex], d[randIndex] = indexCard, loopCard
 
-			// original way i designed it. works but above is simpler
+			// original way I designed it. works but above is simpler
 			// d = slices.Replace(d, randIndex, randIndex+1, loopCard)
 			// d = slices.Replace(d, loopIndex, loopIndex+1, indexCard)
-		}	
+		}
 	}
-			d.print()
+	d.print()
 
 }
